@@ -89,6 +89,66 @@ describe("salary field validation", () => {
   });
 });
 
+describe("work mode field validation", () => {
+  test("accepts a prospect with no work mode field", () => {
+    const result = validateProspect({
+      companyName: "Airbnb",
+      roleTitle: "Product Designer",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts Remote as a valid work mode", () => {
+    const result = validateProspect({
+      companyName: "Airbnb",
+      roleTitle: "Product Designer",
+      workMode: "Remote",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts Hybrid as a valid work mode", () => {
+    const result = validateProspect({
+      companyName: "Airbnb",
+      roleTitle: "Product Designer",
+      workMode: "Hybrid",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts On-site as a valid work mode", () => {
+    const result = validateProspect({
+      companyName: "Airbnb",
+      roleTitle: "Product Designer",
+      workMode: "On-site",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts work mode combined with all other optional fields", () => {
+    const result = validateProspect({
+      companyName: "Airbnb",
+      roleTitle: "Product Designer",
+      status: "Applied",
+      interestLevel: "High",
+      salary: "$130,000",
+      workMode: "Remote",
+      notes: "Fully remote, great perks.",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+});
+
 describe("notes field validation", () => {
   test("accepts a prospect with no notes field", () => {
     const result = validateProspect({

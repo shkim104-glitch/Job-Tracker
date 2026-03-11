@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertProspectSchema, STATUSES, INTEREST_LEVELS } from "@shared/schema";
+import { insertProspectSchema, STATUSES, INTEREST_LEVELS, WORK_MODES } from "@shared/schema";
 import type { InsertProspect, Prospect } from "@shared/schema";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -43,6 +43,7 @@ export function EditProspectForm({ prospect, onSuccess }: EditProspectFormProps)
       interestLevel: prospect.interestLevel as InsertProspect["interestLevel"],
       notes: prospect.notes ?? "",
       salary: prospect.salary ?? "",
+      workMode: (prospect.workMode as InsertProspect["workMode"]) ?? null,
     },
   });
 
@@ -124,6 +125,31 @@ export function EditProspectForm({ prospect, onSuccess }: EditProspectFormProps)
                   data-testid="input-edit-salary"
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="workMode"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Work Mode (optional)</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value ?? ""}>
+                <FormControl>
+                  <SelectTrigger data-testid="select-edit-work-mode">
+                    <SelectValue placeholder="Select work mode" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {WORK_MODES.map((mode) => (
+                    <SelectItem key={mode} value={mode} data-testid={`option-edit-work-mode-${mode}`}>
+                      {mode}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
