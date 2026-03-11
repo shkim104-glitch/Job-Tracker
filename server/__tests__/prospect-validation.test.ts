@@ -88,3 +88,73 @@ describe("salary field validation", () => {
     expect(result.errors).toHaveLength(0);
   });
 });
+
+describe("notes field validation", () => {
+  test("accepts a prospect with no notes field", () => {
+    const result = validateProspect({
+      companyName: "Stripe",
+      roleTitle: "Backend Engineer",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts a prospect with null notes", () => {
+    const result = validateProspect({
+      companyName: "Stripe",
+      roleTitle: "Backend Engineer",
+      notes: null,
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts a prospect with an empty string for notes", () => {
+    const result = validateProspect({
+      companyName: "Stripe",
+      roleTitle: "Backend Engineer",
+      notes: "",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts a short single-line note", () => {
+    const result = validateProspect({
+      companyName: "Stripe",
+      roleTitle: "Backend Engineer",
+      notes: "Spoke to recruiter on Monday.",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts a long multi-line note", () => {
+    const result = validateProspect({
+      companyName: "Stripe",
+      roleTitle: "Backend Engineer",
+      notes: "Round 1: phone screen with HR.\nRound 2: technical with two engineers.\nRound 3: system design with staff engineer.\nFeel good about it — follow up next week.",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  test("accepts notes alongside all other optional fields", () => {
+    const result = validateProspect({
+      companyName: "Stripe",
+      roleTitle: "Backend Engineer",
+      status: "Interviewing",
+      interestLevel: "High",
+      salary: "$150,000",
+      notes: "Great culture fit. Ask about remote policy.",
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+});
