@@ -14,6 +14,8 @@ export const STATUSES = [
 
 export const INTEREST_LEVELS = ["High", "Medium", "Low"] as const;
 
+export const WORK_MODES = ["Remote", "Hybrid", "On-site"] as const;
+
 export const prospects = pgTable("prospects", {
   id: serial("id").primaryKey(),
   companyName: text("company_name").notNull(),
@@ -23,6 +25,7 @@ export const prospects = pgTable("prospects", {
   interestLevel: text("interest_level").notNull().default("Medium"),
   notes: text("notes"),
   salary: text("salary"),
+  workMode: text("work_mode"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -37,6 +40,7 @@ export const insertProspectSchema = createInsertSchema(prospects).omit({
   jobUrl: z.string().optional().nullable(),
   notes: z.string().optional().nullable(),
   salary: z.string().optional().nullable(),
+  workMode: z.enum(WORK_MODES).optional().nullable(),
 });
 
 export type InsertProspect = z.infer<typeof insertProspectSchema>;
